@@ -1,0 +1,58 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background:
+    linear-gradient(135deg, #f8fafc 0%, #eef7f4 42%, #fff7ed 100%);
+}
+
+.hidden {
+  display: none !important;
+}
+
+#infos {
+  padding-left: 1.25rem;
+}
+
+#infos li {
+  margin: 0.45rem 0;
+}
+
+@media print {
+  .app-header,
+  .app-footer,
+  h1,
+  main > section:not(#attestation),
+  #searchForm,
+  #message,
+  #sheetStatus,
+  #printBtn,
+  #cancelReinscritBtn {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #attestation {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  .attestation-header {
+    border-bottom: none !important;
+  }
+}

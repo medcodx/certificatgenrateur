@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attestation d'inscription</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            boxShadow: {
+              soft: "0 18px 45px rgba(15, 23, 42, 0.10)",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="app.js?v=20260607-4"></script>
+  </head>
+  <body class="min-h-screen text-slate-900 antialiased">
+    <header class="app-header mx-auto mt-4 flex w-[min(1100px,calc(100%-2rem))] flex-col gap-4 rounded-lg border border-white/80 bg-white/85 p-4 shadow-soft backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl md:flex-row md:items-center md:justify-between">
+      <div class="flex min-w-0 flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
+        <img src="assets/Logo_FMPR.png" alt="Logo FMPR" class="h-auto w-36 object-contain" />
+        <div class="space-y-1">
+          <p class="font-extrabold leading-tight text-slate-800">Universite Mohamed V</p>
+          <p class="font-extrabold leading-tight text-teal-800">Faculte de medecine et pharmacie Rabat</p>
+        </div>
+      </div>
+      <div class="rounded-lg bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 px-4 py-3 text-center text-sm font-black uppercase tracking-normal text-white shadow-lg shadow-teal-900/20 transition duration-300 hover:scale-[1.02]">
+        Certificat Generateur
+      </div>
+    </header>
+
+    <main class="container mx-auto mt-6 max-w-5xl px-4 pb-8">
+      <h1 class="mb-5 text-center text-3xl font-black leading-tight text-slate-900 sm:text-4xl">Attestation d'inscription</h1>
+
+      <section class="mb-4 overflow-hidden rounded-lg border border-cyan-100 bg-white/90 p-5 shadow-soft backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
+        <div class="mb-4 h-1.5 rounded-full bg-gradient-to-r from-cyan-500 via-emerald-500 to-amber-400"></div>
+        <h2 class="mb-3 text-lg font-black text-slate-800">1) Donnees Google Sheet</h2>
+        <p id="sheetStatus" class="min-h-6 rounded-lg bg-cyan-50 px-3 py-2 text-sm font-bold text-cyan-800">Chargement des donnees...</p>
+        <p class="mt-3 text-sm font-medium text-slate-500">Colonnes attendues: nom, prenom, code_apogee, cin, cne, reinscription, motif (+ promotion/filiere optionnelles)</p>
+      </section>
+
+      <section class="mb-4 overflow-hidden rounded-lg border border-teal-100 bg-white/90 p-5 shadow-soft backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
+        <div class="mb-4 h-1.5 rounded-full bg-gradient-to-r from-teal-500 via-cyan-500 to-rose-400"></div>
+        <h2 class="mb-4 text-lg font-black text-slate-800">2) Rechercher un doctorant</h2>
+        <form id="searchForm" class="space-y-4">
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="block text-sm font-extrabold text-slate-700">Nom
+              <input class="mt-2 w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-slate-900 outline-none transition duration-200 placeholder:text-slate-400 focus:border-cyan-500 focus:bg-white focus:ring-4 focus:ring-cyan-100" type="text" id="nom" placeholder="Ex: El Idrissi" />
+            </label>
+            <label class="block text-sm font-extrabold text-slate-700">Prenom
+              <input class="mt-2 w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-slate-900 outline-none transition duration-200 placeholder:text-slate-400 focus:border-cyan-500 focus:bg-white focus:ring-4 focus:ring-cyan-100" type="text" id="prenom" placeholder="Ex: Sara" />
+            </label>
+          </div>
+
+          <p class="text-center text-sm font-black uppercase tracking-normal text-slate-400">OU</p>
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="block text-sm font-extrabold text-slate-700">Code Apogee
+              <input class="mt-2 w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-slate-900 outline-none transition duration-200 placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-100" type="text" id="codeApogee" placeholder="Ex: 12345678" />
+            </label>
+            <label class="block text-sm font-extrabold text-slate-700">CNE
+              <input class="mt-2 w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-slate-900 outline-none transition duration-200 placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-100" type="text" id="cne" placeholder="Ex: M123456789" />
+            </label>
+          </div>
+
+          <label class="block text-sm font-extrabold text-slate-700">Annee universitaire
+            <input class="mt-2 w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-slate-900 outline-none transition duration-200 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-100" type="text" id="anneeUniversitaire" value="2025/2026" placeholder="Ex: 2025/2026" required />
+          </label>
+
+          <button class="inline-flex min-h-11 items-center justify-center rounded-lg bg-gradient-to-r from-cyan-600 to-teal-600 px-5 py-3 font-black text-white shadow-lg shadow-cyan-900/20 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-cyan-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0" type="submit">Rechercher</button>
+        </form>
+        <p id="message" class="mt-4 min-h-6 rounded-lg px-3 py-2 text-sm font-bold"></p>
+        <div id="notReinscritPanel" class="hidden mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-950 shadow-sm transition duration-300">
+          <p id="notReinscritMessage" class="mb-4 font-bold leading-relaxed"></p>
+          <button id="acceptReinscritBtn" class="inline-flex min-h-11 items-center justify-center rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-3 font-black text-white shadow-lg shadow-emerald-900/20 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-emerald-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0" type="button">Accepter comme reinscrit</button>
+        </div>
+      </section>
+
+      <section id="attestation" class="hidden mb-4 overflow-hidden rounded-lg border border-emerald-100 bg-white p-6 shadow-soft transition-all duration-300">
+        <div class="attestation-header mb-5 flex flex-col gap-4 border-b border-slate-200 pb-4 sm:flex-row sm:items-center">
+          <img src="assets/Logo_FMPR.png" alt="Logo Universite Mohammed V et FMPR" class="h-auto w-52 max-w-full object-contain sm:max-w-[45%]" />
+          <div class="space-y-1">
+            <p class="font-black leading-tight text-slate-800">Universite Mohammed V</p>
+            <p class="font-black leading-tight text-teal-800">Faculte de Medecine et de Pharmacie - Rabat</p>
+            <p class="font-bold leading-tight text-slate-600">Service de la recherche, cooperation et partenariat</p>
+          </div>
+        </div>
+        <h2 class="mb-3 text-2xl font-black text-slate-900">Attestation d'inscription</h2>
+        <p class="mb-3 font-semibold text-slate-700">Nous soussignes attestons que :</p>
+        <ul id="infos" class="mb-4 rounded-lg bg-slate-50 p-4 font-semibold text-slate-800"></ul>
+        <p id="attestationText" class="font-semibold text-slate-700">est regulierement inscrit(e) en cycle doctoral pour l'annee universitaire selectionnee.</p>
+        <p id="attestationDate" class="mt-5 text-right font-black text-slate-800"></p>
+        <p class="mt-10 text-right font-black text-slate-900">Signature Directeur de CEDoc</p>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <button id="printBtn" class="inline-flex min-h-11 items-center justify-center rounded-lg bg-gradient-to-r from-slate-800 to-teal-700 px-5 py-3 font-black text-white shadow-lg shadow-slate-900/20 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-teal-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0" type="button">Imprimer l'attestation</button>
+          <button id="cancelReinscritBtn" class="inline-flex min-h-11 items-center justify-center rounded-lg bg-gradient-to-r from-rose-600 to-orange-500 px-5 py-3 font-black text-white shadow-lg shadow-rose-900/20 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-rose-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0" type="button">Annuler reinscription</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer mx-auto mb-4 w-[min(980px,calc(100%-2rem))] rounded-lg bg-gradient-to-r from-slate-800 via-teal-700 to-emerald-600 px-4 py-4 text-center font-black text-white shadow-soft">
+       Coder par M. Sabrane Mohamed Amine
+    </footer>
+  </body>
+</html>
